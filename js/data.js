@@ -29,7 +29,8 @@ var GDM_GRID_VIEWER = (function(module){
             self.filtered_records = self.flows_xfilter.groupAll();
             module.UI.init();
             module.Graphs.init();
-            module.Graphs.show();        
+            module.Graphs.show();
+            module.Map.init();
         }
 
         // [ public methods ]

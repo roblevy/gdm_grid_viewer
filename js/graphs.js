@@ -6,8 +6,7 @@ var GDM_GRID_VIEWER = (function(module){
           ui = module.UI,
           dimensions = {},
           groups = {},
-          bilateral_chart = {},
-          sector_chart = {};
+          _charts = {};
 
       // [ private methods ]
       var init = function() {
@@ -32,15 +31,15 @@ var GDM_GRID_VIEWER = (function(module){
               };
           // dc.SortableBubbleGrid is defined in
           // js/graph/newDCgridChart.js
-          bilateral_chart = dc.SortableBubbleGrid("#bilateralChart");
+          _charts.bilateral_chart = dc.SortableBubbleGrid("#bilateralChart");
           // dc.rowChart is a standard method of dc.js
-          sector_chart = dc.rowChart("#allSectorChart");
+          _charts.sector_chart = dc.rowChart("#allSectorChart");
           initialise_bilateral_chart();
           initialise_sector_chart();
       };
 
       var initialise_bilateral_chart = function() {
-          bilateral_chart
+          _charts.bilateral_chart
               .width(ui.dom_bilateral_chart.parent().width())
               .height(ui.dom_bilateral_chart.parent().width())
               .group(groups.bilateral)
@@ -82,7 +81,7 @@ var GDM_GRID_VIEWER = (function(module){
               rowChartColors.push(rowChartColorsScale(i));
           }
       
-          sector_chart
+          _charts.sector_chart
               .width(ui.dom_sector_chart.parent().width())
               .height(1000)
               .group(groups.sector)
@@ -115,7 +114,9 @@ var GDM_GRID_VIEWER = (function(module){
       // [ public methods ]    
       return {
           init: init,
-          show: show
+          show: show,
+          charts: _charts,
+          update_filtered_count: update_filtered_count
       };
     })();
     return module;
