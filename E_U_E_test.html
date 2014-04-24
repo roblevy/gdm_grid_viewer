@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Model results</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A preview of the jQuery UI Bootstrap theme">
+  <meta name="author" content="Addy Osmani">
+
+  <!-- Le styles -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link type="text/css" href="css/eggplant/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+  <link type="text/css" href="assets/css/font-awesome.min.css" rel="stylesheet" />
+  <link type="text/css" href="assets/css/colorbrewer.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/dc.css">
+  <style type="text/css" media="screen">
+	  svg{
+		  background: rgba(255,255,255, 0.2);
+		  box-shadow: inset 0 0 3px 0px #CECECE;
+		  vertical-align: middle;
+	  }
+  </style>
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css">
+  <![endif]-->
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" type="text/css" href="css/custom-theme/jquery.ui.1.10.0.ie.css"/>
+  <![endif]-->
+
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Le fav and touch icons -->
+  <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
+  
+	  
+	  
+</head>
+<body>
+	
+
+	<div class="row-fluid">
+		<div class="span3 offset3">
+			<div style="text-align: center; margin-top: 50px;">
+				<div class="button" id="add-data">Add</div>
+			</div>
+		</div>
+		<div class="span3">
+			<div style="text-align: center; margin-top: 50px;">
+				<div class="button" id="remove-data">Remove</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- header -->
+	<div class="row-fluid">
+		<div class="span6 offset3">
+			<div id="demo" style="text-align: center;  margin-top: 50px;">
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+
+	
+	
+ 
+	<script src="assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="assets/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
+	<script src="assets/js/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="assets/js/d3.v3.min.js" type="text/javascript"></script>
+	<script src="assets/js/crossfilter.js" type="text/javascript"></script>
+	<script src="assets/js/dc.js" type="text/javascript"></script>
+	<script src="js/graph/newDCgridChart.js" type="text/javascript" ></script>
+	<script src="assets/js/colorbrewer.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	$(".button").button();
+		JSONData = [
+		  { "id": 3, "created_at": "Sun May 05 2013", "amount": 12000},
+		  { "id": 1, "created_at": "Mon May 13 2013", "amount": 2000},
+		  { "id": 2, "created_at": "Thu Jun 06 2013", "amount": 17000},
+		  { "id": 4, "created_at": "Thu May 09 2013", "amount": 15000},
+		  { "id": 5, "created_at": "Mon Jul 01 2013", "amount": 16000}
+		];
+		(function() {
+		  var data = JSONData.slice()
+		  var format = d3.time.format("%a %b %d %Y")
+		  var amountFn = function(d) { return d.amount }
+		  var dateFn = function(d) { return format.parse(d.created_at) }
+
+		  var x = d3.time.scale()
+		    .range([10, 280])
+		    .domain(d3.extent(data, dateFn))
+
+		  var y = d3.scale.linear()
+		    .range([180, 10])
+		    .domain(d3.extent(data, amountFn))
+  
+		  var svg = d3.select("#demo").append("svg:svg")
+		  .attr("width", 300)
+		  .attr("height", 200)
+
+	     var start = d3.min(data, dateFn)
+	     var end = d3.max(data, dateFn)
+		 
+		  var refreshGraph = function() {
+			  
+			  //redefine a new scale according to the new data
+			  x.domain(d3.extent(data, dateFn))
+			  y.domain(d3.extent(data, amountFn))
+
+			 var circles = svg.selectAll("circle").data(data, dateFn)//this extra argument, is the 
+			 														 //key funciton to sync data and curcles
+			 //do transition on the circle already bounded to data
+			var existingCircles = circles.transition()
+			 .attr("cx", function(d) { return x(dateFn(d)) })
+			 .attr("cy", function(d) { return y(amountFn(d)) });
+			 
+			 //enter calls anly the data not bounded to existing circles, so add the new circles
+		     var newCirlces = circles.enter()
+		      .append("svg:circle")
+		      .attr("r", 0)
+		      .attr("cx", function(d) { return x(dateFn(d)) })
+		      .attr("cy", function(d) { return y(amountFn(d)) })
+			  
+			newCirlces
+				.transition()
+				.attr("r", 4);
+			  
+			  var canceldCircles = circles.exit()
+			  	.transition()
+			  	.attr("r", 10)
+				.remove();
+		    }
+			
+		d3.selectAll("#add-data")
+		   .on("click", function() {
+		     var time = start.getTime() + Math.random() * (end.getTime() - start.getTime())
+		     var date = new Date(time)
+
+		     obj = {
+		       'id': Math.floor(Math.random() * 70),
+		       'amount': Math.floor(1000 + Math.random() * 20001),
+		       'created_at': date.toDateString()
+		     }
+		     data.push(obj)
+		     refreshGraph()
+		  })
+		  
+		  d3.selectAll("#remove-data")
+		      .on("click", function() {
+		        var idx = Math.floor(Math.random() * data.length)
+		        data.splice( Math.floor(Math.random() * data.length), 1 )
+		        refreshGraph()
+		      })
+			  
+		  refreshGraph();
+		})();
+	</script>
+	<!-- // <script type="text/javascript" src="js/graph/simpleBubble.js"></script> -->
+	
+	<!-- // <script type="text/javascript" charset="utf-8">
+	// d3.selectAll("#allCountriesChart .x text")
+	// .style("text-anchor","end")
+	// .attr("transform","rotate(270) translate(-8,-12)")
+	// ;
+	// d3.select("#allCountriesChart svg")
+	// .attr("transform","scale(0.9)")
+	// ;
+	// 
+	// </script> -->
+	
+	
+	<script src="assets/js/google-code-prettify/prettify.js" type="text/javascript"></script>
+	<link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">	
+	<!-- <link rel="stylesheet" href="css/style.css"> -->
+	
+
+
+
+</body>
+</html>

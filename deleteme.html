@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<body>
+<script src="assets/js/d3.v3.min.js" type="text/javascript"></script>
+<script>
+var MODULE = MODULE || {};
+
+MODULE.Submodule = (function(){
+    var foo = [],
+        bar = [];
+
+    var init = function() {
+        d3.json('path_to_file.json', set_globals);
+    }
+
+    var set_globals = function(error, json) {
+        foo = ['a','b','c']; // 'this' doesn't point to MODULE.Submodule 
+        bar.push('a');
+        console.log('foo: ' + MODULE.Submodule.foo); // foo:
+        console.log('bar: ' + MODULE.Submodule.bar); // bar: a
+    }
+
+    return {
+        init: init,
+        foo: foo,
+        bar: bar
+    }
+}());
+
+MODULE.Submodule.init();
+</script>
+</body>

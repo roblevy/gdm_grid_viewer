@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Model results</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A preview of the jQuery UI Bootstrap theme">
+  <meta name="author" content="Addy Osmani">
+
+  <!-- Le styles -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link type="text/css" href="css/eggplant/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+  <link type="text/css" href="assets/css/colorbrewer.css" rel="stylesheet" />
+  <link type="text/css" href="css/map.css" rel="stylesheet" />
+  <link type="text/css" href="css/dc.css" rel="stylesheet">
+   <link type="text/css" href="css/style.css" rel="stylesheet">
+  <!--[if IE 7]>
+  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css">
+  <![endif]-->
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" type="text/css" href="css/custom-theme/jquery.ui.1.10.0.ie.css"/>
+  <![endif]-->
+
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Le fav and touch icons -->
+  <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+  <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
+  
+	  
+	  
+</head>
+<body>
+	
+	<header class="jumbotron">
+		<div class="container">
+			<h1 class="pull-left">Global demonstration model</h1>
+			<p class="pull-left">Explore world scenarios</p>
+		</div>
+	</header>
+	
+	<div class="container">
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="pull-right" style="font-size:18px; font-weight:bold;padding-top:20px;">
+				Showing <span id="filtered_count"></span> out of <span id="flows_count"></span> flows &nbsp;
+				<div class ="icon resetAll" style="display: inline-block; padding-top:5px;">
+					<span id="refresh-all" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
+				</div>
+			</div>
+				<!-- <a href="javascript:dc.filterAll(); dc.redrawAll(); resetMap();">Reset All</a></h1> -->
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div class="span12">
+			<section>
+				<div class="page-header">
+					<h1>
+						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
+							<span id="expand-scenarios" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
+						</div>
+						Scenarios 
+					</h1>
+				</div>
+				<div id="content-scenarios">
+					<span style="font-size:16px;">Select a scenario &nbsp;</span>
+					<select id="scenarios">
+						<option value="random">Random</option>
+						<option value="guns_roses">Guns and Roses</option>
+					</select>
+				</div>
+			</section>
+
+		</div>
+	</div>
+	
+	<!-- data count -->
+	<!-- <div class="row-fluid">
+		<div class="span12">
+			<div>
+				<a href="javascript:;" id="addCountry" class="ui-state-default ui-corner-all button">Add Country</a>
+			</div>
+		</div>
+	</div> -->
+	
+	 <!-- map -->
+	<div class="row-fluid">
+		<div class="span12">
+			<section>
+				<div class="page-header">
+					<h1 id="world_map">
+						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
+							<span id="expand-map" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
+						</div>
+						Countries
+						<div class ="icon resetMap" style="display: inline-block; padding-bottom:4px;">
+							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
+						</div>
+						<!-- <a class="resetMap" href="javascript:resetMap();" style="display: none;">| reset</a> -->
+
+					</h1>
+				</div>
+				<div id="content-map">
+					<div id="map" class="center">
+						<div class="button" id="zoom_in">+</div>
+						<div class="button" id="zoom_out">-</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</section>	
+		</div>
+	</div>
+	
+	<!-- header -->
+	<div class="row-fluid">
+		<div class="span9">
+			<section>
+				<div class="page-header">
+					<h1 id="flows">
+						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
+							<span id="expand-flows" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
+						</div>
+						Flows 
+						<div class ="icon resetGrid" style="display: inline-block; padding-bottom:4px;">
+							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
+						</div>
+						<!-- <a class="resetGrid" href="javascript:bilateralChart.resetGrid();" style="display: none;">| reset</a> -->
+					</h1>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<div id="content-flows">
+							<div id="bilateralChart">
+								<div class="clearfix"></div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</section>
+
+		</div>
+		
+		<div class="span3">
+			<section>
+				<div class="page-header">
+					<h1>
+						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
+							<span id="expand-sectors" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
+						</div>
+						Sectors 
+						<div class ="icon resetSectors" style="display: inline-block; padding-bottom:4px;">
+							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
+						</div>
+						<!-- <a class="resetSectors" href="javascript:allSectorChart.filterAll();dc.redrawAll();" style="display: none;">| reset</a> -->
+					</h1>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<div id="content-sectors">
+							<div id="allSectorChart">					
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+		</div>
+	</div>
+	
+	
+</div>
+
+	
+
+
+<script src="assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="assets/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
+<script src="assets/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="assets/js/d3.v3.min.js" type="text/javascript"></script>
+<script src="assets/js/queue.v1.min.js" type="text/javascript"></script>
+<script src="assets/js/topojson.js" type="text/javascript"></script>
+<script src="assets/js/crossfilter.js" type="text/javascript"></script>
+<script src="assets/js/dc.js" type="text/javascript"></script>
+<script src="js/graph/newDCgridChart.js" type="text/javascript" ></script>
+<script src="assets/js/colorbrewer.js" type="text/javascript"></script>
+<script src="assets/js/colorbrewer.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/graphs.js"></script>
+<script type="text/javascript" src="js/graph/drawMap.js"></script>
+<script type="text/javascript" src="js/graph/drawDC.js"></script>
+
+<script>
+GDM_GRID_VIEWER.Data.get_data();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+var GDM_GRID_VIEWER = GDM_GRID_VIEWER || {};
