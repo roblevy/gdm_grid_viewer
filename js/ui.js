@@ -6,7 +6,9 @@ var GDM_GRID_VIEWER = (function(module){
           dom_bilateral_chart = $("#bilateralChart"),
           dom_sector_chart = $("#allSectorChart"),
           dom_reset_sectors = $(".resetSectors"),
-          dom_filtered_count = $("#filtered_count");
+          dom_filtered_count = $("#filtered_count"),
+          dom_map = $("#map");
+          
       // [ private methods ]
       function init() {
           $(".button").button();
@@ -49,16 +51,9 @@ var GDM_GRID_VIEWER = (function(module){
           dom_bilateral_chart: dom_bilateral_chart,
           dom_sector_chart: dom_sector_chart,
           dom_reset_sectors: dom_reset_sectors,
-          dom_filtered_count: dom_filtered_count,  
+          dom_filtered_count: dom_filtered_count,
+          dom_map: dom_map,
       };
     })();
     return module;
 }(GDM_GRID_VIEWER || {}));
-
-GDM_GRID_VIEWER.UI = (function(GDM_GRID_VIEWER){
-    'use strict';
-
-
-}(GDM_GRID_VIEWER));
-
-
