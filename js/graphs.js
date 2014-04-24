@@ -1,3 +1,10 @@
+var GDM_GRID_VIEWER = (function(module){
+    'use strict';
+    var self = module.Data = module.Data || (function() {
+    })();
+    return module;
+}(GDM_GRID_VIEWER || {}));
+
 GDM_GRID_VIEWER.Graphs = (function(GDM_GRID_VIEWER){
     'use strict';
     // [ private properties ]
