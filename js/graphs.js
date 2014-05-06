@@ -10,12 +10,12 @@ GDM_GRID_VIEWER.Graphs = (function(my){
         _charts = {};
 
     // [ private methods ]
-    var _init = function() {
+    var _init = function(xfilter) {
         dimensions = {
-            bilateral: _data.flows_xfilter().dimension(function(d){
+            bilateral: xfilter.dimension(function(d){
                 return d.from + '|' + d.to;
             }),
-            sector: _data.flows_xfilter().dimension(function(d){
+            sector: xfilter.dimension(function(d){
                 return d.sector;
             })
         };
@@ -37,6 +37,7 @@ GDM_GRID_VIEWER.Graphs = (function(my){
         _charts.sector_chart = dc.rowChart("#allSectorChart");
         initialise_bilateral_chart();
         initialise_sector_chart();
+		_show();
     };
 
     var initialise_bilateral_chart = function() {
@@ -93,9 +94,9 @@ GDM_GRID_VIEWER.Graphs = (function(my){
             .colors(rowChartColors)
             .on("filtered",function(chart,filter){
                 if(chart.hasFilter()){
-                    ui.dom_reset_sectors.show();
+                    ui.dom_reset_sectors().show();
                 }else{
-                    ui.dom_reset_sectors.hide();
+                    ui.dom_reset_sectors().hide();
                 }
                 update_filtered_count();
             })

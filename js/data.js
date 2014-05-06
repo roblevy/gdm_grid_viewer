@@ -6,6 +6,7 @@ GDM_GRID_VIEWER.Data = (function(my){
     var server_address = "http://localhost:5000",
         _flows = [], // Flow data from the server JSON
         _flow_deltas = [], // Changes since last time (or 0)
+		_show_deltas = false, // Toggle to show deltas
         _countries = [], // list of countries from the server JSON
         _country_names = [],
         _country_ids = [],
@@ -55,8 +56,11 @@ GDM_GRID_VIEWER.Data = (function(my){
     };
 
     var _json_response = function(error, json) {
-        _flow_deltas = _delta_json(json.flows, _flows);
-        _flows = json.flows;
+		if (_show_deltas) {
+			_flows = json.flows;
+		} else {
+			_flows = _delta_json(json.flows, _flows);
+		}
         _countries = json.countries;
         _country_names = _countries.map(function(c) { return c.name; });
         _country_ids = _countries.map(function(c) { return c.id; });
@@ -65,12 +69,12 @@ GDM_GRID_VIEWER.Data = (function(my){
         _flows_xfilter = crossfilter(_flows);
         _filtered_records = _flows_xfilter.groupAll();
         GDM_GRID_VIEWER.UI.init();
-        GDM_GRID_VIEWER.Graphs.init();
+        GDM_GRID_VIEWER.Graphs.init(_flows_xfilter);
         GDM_GRID_VIEWER.Map.init();
     }
 
     // [ public methods ]
-    my.get_data = _get_data;
+    my.init = _get_data;
     my.filtered_records = function() { return _filtered_records; };
     my.filtered_count = function() { return _filtered_records.value(); };
     my.flows_xfilter = function() { return _flows_xfilter; };

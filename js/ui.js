@@ -9,7 +9,7 @@ GDM_GRID_VIEWER.UI = (function(my){
           _dom_reset_sectors = $(".resetSectors"),
           _dom_filtered_count = $("#filtered_count"),
           _dom_map = $("#map");
-
+	
       // [ private methods ]
       function _init() {
           $(".button").button();
