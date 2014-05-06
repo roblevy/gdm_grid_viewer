@@ -1,42 +1,45 @@
-var GDM_GRID_VIEWER = (function(module){
+var GDM_GRID_VIEWER = GDM_GRID_VIEWER || {};
+
+GDM_GRID_VIEWER.Map = (function(my){
     'use strict';
-    var self = module.Map = module.Map || (function() {
-      // [ private properties ]
-      var _data = module.Data,
-          _graphs = module.Graphs,
-          _charts = _graphs.charts,
-          _ui = module.UI,
-          _width, _height,
-          _map, _svg, _projection, _path, _zoom, _tooltip, _d3_countries,
-          _countries_to_filter = [];
-          
-      // [ private methods ]
-      var _init = function() {
-          _width = _ui.dom_map.width();
-          _height = _width / 2;
-          _projection = d3.geo.equirectangular()
-              .scale(153)
-              .translate([_width / 2, _height / 2])
-              .precision(.1);
-          _path = d3.geo.path().projection(_projection);
-          _zoom = d3.behavior.zoom()
-              .scaleExtent([1, 8]).on("zoom", _redraw);
-          _map = d3.select("#map");
-          _svg = _map.append("svg")
-                  .attr("width", _width)
-                  .attr("height", _height)
-                  .attr("class","grabbable")
-                  .call(_zoom)
-                  .append("g");
-          _tooltip = _map.append("div")
-              .attr("class", "tooltip hidden");
-          d3.selectAll('.button').on('click', _zoomClick);
-          queue()
-              .defer(d3.json, "data/world-110m.json")
-              .defer(d3.csv, "data/world-country-names-with-iso.csv")
-              .await(_ready);
-      };
-      
+    // [ private properties ]
+    var _data = GDM_GRID_VIEWER.Data,
+        _graphs = GDM_GRID_VIEWER.Graphs,
+        _charts = _graphs.charts,
+        _ui = GDM_GRID_VIEWER.UI,
+        _bilateral_chart, _sector_chart, _width, _height,
+        _map, _svg, _projection, _path, _zoom, _tooltip, _d3_countries,
+        _countries_to_filter = [];
+
+    // [ private methods ]
+    var _init = function() {
+        _bilateral_chart = _charts().bilateral_chart;
+        _sector_chart = _charts().sector_chart;
+        _width = _ui.dom_map().width();
+        _height = _width / 2;
+        _projection = d3.geo.equirectangular()
+            .scale(153)
+            .translate([_width / 2, _height / 2])
+            .precision(.1);
+        _path = d3.geo.path().projection(_projection);
+        _zoom = d3.behavior.zoom()
+            .scaleExtent([1, 8]).on("zoom", _redraw);
+        _map = d3.select("#map");
+        _svg = _map.append("svg")
+                .attr("width", _width)
+                .attr("height", _height)
+                .attr("class","grabbable")
+                .call(_zoom)
+                .append("g");
+        _tooltip = _map.append("div")
+            .attr("class", "tooltip hidden");
+        d3.selectAll('.button').on('click', _zoomClick);
+        queue()
+            .defer(d3.json, "data/world-110m.json")
+            .defer(d3.csv, "data/world-country-names-with-iso.csv")
+            .await(_ready);
+    };
+
     var _deselectAll = function(){
         _countries_to_filter.length = 0;
         _renderMap();
@@ -44,29 +47,29 @@ var GDM_GRID_VIEWER = (function(module){
     }
 
     var _resetMap = function(){
-      
+
       _countries_to_filter.length = 0;
-      _graphs.bilateral_chart.filterAll();
-      _graphs.bilateral_chart.isSubset(false);
-      // _graphs.bilateral_chart.resetGrid();
-      _graphs.bilateral_chart.reDrawGrid(map_countries);
-      
-      _charts.sector_chart.redraw();
+      _bilateral_chart.filterAll();
+      _bilateral_chart.isSubset(false);
+      // _bilateral_chart.resetGrid();
+      _bilateral_chart.reDrawGrid(map_countries);
+
+      __sector_chart.redraw();
       _renderMap();
       $("._resetMap").hide();
       $(".resetGrid").hide();
-      _graphs.update_filtered_count(_data.filtered_records.value());
+      _graphs.update_filtered_count(_data.filtered_records().value());
     }
 
     var _addToFilters = function(c){
-      if(!_charts.bilateral_chart.hasFilter(c+c)){
-        _charts.bilateral_chart.filter(c+c);
+      if(!_charts.bilateral_chart().hasFilter(c+c)){
+        _charts.bilateral_chart().filter(c+c);
       }
       _buildFlowsFilters(c);
       _countries_to_filter.push(c);
-      _charts.bilateral_chart.isSubset(true);
-      
-      _charts.bilateral_chart.reDrawGrid(_countries_to_filter);
+      _charts.bilateral_chart().isSubset(true);
+
+      _charts.bilateral_chart().reDrawGrid(_countries_to_filter);
     }
 
     var _removeFromFilters = function(c){
@@ -74,29 +77,29 @@ var GDM_GRID_VIEWER = (function(module){
       var index = _countries_to_filter.indexOf(c);
       if (index > -1) {
           _countries_to_filter.splice(index, 1);
-        if(_charts.bilateral_chart.hasFilter(c+c)){
-          _charts.bilateral_chart.filter(c+c);
+        if(_charts.bilateral_chart().hasFilter(c+c)){
+          _charts.bilateral_chart().filter(c+c);
         }
       }
       if(_countries_to_filter.length > 0){
         _buildFlowsFilters(c);
-        _charts.bilateral_chart.reDrawGrid(_countries_to_filter);
-        // _charts.bilateral_chart.filterAll();
+        _charts.bilateral_chart().reDrawGrid(_countries_to_filter);
+        // _charts.bilateral_chart().filterAll();
       }else{
-        _charts.bilateral_chart.isSubset(false);
+        _charts.bilateral_chart().isSubset(false);
         _resetMap();
       }
 
     }
 
     var _buildFlowsFilters = function(c){
-      
+
       for (var i = 0; i < _countries_to_filter.length; i++) {
-        _charts.bilateral_chart.filter(_countries_to_filter[i]+c)
-        _charts.bilateral_chart.filter(c+_countries_to_filter[i])
+        _charts.bilateral_chart().filter(_countries_to_filter[i]+c)
+        _charts.bilateral_chart().filter(c+_countries_to_filter[i])
       }
-      _charts.sector_chart.redraw();
-      _graphs.update_filtered_count(_data.filtered_records.value());
+      _sector_chart.redraw();
+      _graphs.update_filtered_count(_data.filtered_records().value());
     }
 
     var _redraw = function() {
@@ -135,7 +138,7 @@ var GDM_GRID_VIEWER = (function(module){
         target_zoom = _zoom.scale() + (factor * direction);
 
         if (target_zoom < extent[0] || target_zoom > extent[1]) { return false; }
-      
+
         translate0 = [(center[0] - view.x) / view.k, (center[1] - view.y) / view.k];
         view.k = target_zoom;
         l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
@@ -144,7 +147,7 @@ var GDM_GRID_VIEWER = (function(module){
         view.y += center[1] - l[1];
 
         _interpolateZoom([view.x, view.y], view.k);
-      
+
     }
 
     var _renderMap = function(){
@@ -152,12 +155,12 @@ var GDM_GRID_VIEWER = (function(module){
          .enter()
           .insert("path")
           .attr("class", function(d,i){
-          if(_data.country_names.indexOf(d.iso3) != -1){
+          if(_data.country_names().indexOf(d.iso3) != -1){
             return "country inmodel selected";
           }else{
             return "country";
-          } 
-          })    
+          }
+          })
             .attr("title", function(d,i) { return d.name; })
             .attr("d", _path)
             .style("fill", function(d, i) {
@@ -166,7 +169,7 @@ var GDM_GRID_VIEWER = (function(module){
               return "#D0D0D0";
             }else{
               return "#FFFFFF";
-            } 
+            }
           })
           .on("mouseover",function(d){
             var el = d3.select(this);
@@ -191,7 +194,7 @@ var GDM_GRID_VIEWER = (function(module){
           }
         })
         .on("click",function(d){
-        
+
           var el = d3.select(this);
           if(el.classed('inmodel')){
                   if(el.classed('selected')){
@@ -203,7 +206,7 @@ var GDM_GRID_VIEWER = (function(module){
                     el.style('fill','#D0D0D0');
                     _removeFromFilters(d.iso3);
                   }
-              
+
           }
         })
           .on("mousemove", function(d,i) {
@@ -227,7 +230,7 @@ var GDM_GRID_VIEWER = (function(module){
           i = -1,
           n = country_shapes.length;
 
-      country_shapes.forEach(function(d) { 
+      country_shapes.forEach(function(d) {
         var tryit = names.filter(function(n) { return d.id == n.id; })[0];
         if (typeof tryit === "undefined"){
           d.name = "Undefined";
@@ -238,17 +241,14 @@ var GDM_GRID_VIEWER = (function(module){
           d.iso3 = tryit.iso3;
         }
       });
-      
+
       _d3_countries = _svg.selectAll(".country").data(country_shapes);
       _renderMap();
 
     }
-      
-      // [ public methods ]
-      return {
-          init: _init,
-          map: _map
-      };
-    })();
-    return module;
-}(GDM_GRID_VIEWER || {}));
+
+    my.init = _init;
+    my.map = function() { return _map; };
+
+    return my;
+}(GDM_GRID_VIEWER.Map || {}));

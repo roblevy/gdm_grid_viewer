@@ -1,25 +1,26 @@
-var GDM_GRID_VIEWER = (function(module){
+var GDM_GRID_VIEWER = GDM_GRID_VIEWER || {};
+
+GDM_GRID_VIEWER.UI = (function(my){
     'use strict';
-    var self = module.UI = module.UI || (function() {
       // [ private properties ]
-      var data = GDM_GRID_VIEWER.Data,
-          dom_bilateral_chart = $("#bilateralChart"),
-          dom_sector_chart = $("#allSectorChart"),
-          dom_reset_sectors = $(".resetSectors"),
-          dom_filtered_count = $("#filtered_count"),
-          dom_map = $("#map");
-          
+      var _data = GDM_GRID_VIEWER.Data,
+          _dom_bilateral_chart = $("#bilateralChart"),
+          _dom_sector_chart = $("#allSectorChart"),
+          _dom_reset_sectors = $(".resetSectors"),
+          _dom_filtered_count = $("#filtered_count"),
+          _dom_map = $("#map");
+
       // [ private methods ]
-      function init() {
+      function _init() {
           $(".button").button();
           // Report how many records have been filtered
-          dom_filtered_count.append(data.filtered_count());
+          _dom_filtered_count.append(_data.filtered_count());
           // Report the total number of records
-          $("#flows_count").append(data.flows_xfilter.size());
-          initialise_reset_buttons();
-      } 
-   
-      function initialise_reset_buttons() {
+          $("#flows_count").append(_data.flows_xfilter().size());
+          _initialise_reset_buttons();
+      }
+
+      function _initialise_reset_buttons() {
           $(".resetMap").hide();
           $(".resetMap").click(function(){
               resetMap();
@@ -43,17 +44,15 @@ var GDM_GRID_VIEWER = (function(module){
               dc.redrawAll();
           });
       }
-      
-      // [ public methods ]
-      return {
-          init: init,
-          // DOM Elements
-          dom_bilateral_chart: dom_bilateral_chart,
-          dom_sector_chart: dom_sector_chart,
-          dom_reset_sectors: dom_reset_sectors,
-          dom_filtered_count: dom_filtered_count,
-          dom_map: dom_map,
-      };
-    })();
-    return module;
-}(GDM_GRID_VIEWER || {}));
+
+    // [ public methods ]
+    my.init = _init;
+    // DOM Elements
+    my.dom_bilateral_chart = function() { return _dom_bilateral_chart; };
+    my.dom_sector_chart = function() { return _dom_sector_chart; };
+    my.dom_reset_sectors = function() { return _dom_reset_sectors; };
+    my.dom_filtered_count = function() { return _dom_filtered_count; };
+    my.dom_map = function() { return _dom_map; };
+
+    return my;
+}(GDM_GRID_VIEWER.UI || {}));

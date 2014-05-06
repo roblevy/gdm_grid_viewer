@@ -34,20 +34,21 @@
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
   <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
   <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
-  
-	  
-	  
+
+
+
 </head>
 <body>
-	
+
 	<header class="jumbotron">
 		<div class="container">
 			<h1 class="pull-left">Global demonstration model</h1>
 			<p class="pull-left">Explore world scenarios</p>
 		</div>
 	</header>
-	
+
 	<div class="container">
+
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="pull-right" style="font-size:18px; font-weight:bold;padding-top:20px;">
@@ -59,7 +60,7 @@
 				<!-- <a href="javascript:dc.filterAll(); dc.redrawAll(); resetMap();">Reset All</a></h1> -->
 		</div>
 	</div>
-	
+
 	<div class="row-fluid">
 		<div class="span12">
 			<section>
@@ -68,7 +69,7 @@
 						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
 							<span id="expand-scenarios" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
 						</div>
-						Scenarios 
+						Scenarios
 					</h1>
 				</div>
 				<div id="content-scenarios">
@@ -82,7 +83,7 @@
 
 		</div>
 	</div>
-	
+
 	<!-- data count -->
 	<!-- <div class="row-fluid">
 		<div class="span12">
@@ -91,9 +92,66 @@
 			</div>
 		</div>
 	</div> -->
-	
+
 	 <!-- map -->
+	<!-- header -->
 	<div class="row-fluid">
+		<div class="span9">
+			<section>
+				<div class="page-header">
+					<h1 id="flows">
+						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
+							<span id="expand-flows" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
+						</div>
+						Flows
+						<div class ="icon resetGrid" style="display: inline-block; padding-bottom:4px;">
+							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
+						</div>
+						<!-- <a class="resetGrid" href="javascript:bilateralChart.resetGrid();" style="display: none;">| reset</a> -->
+					</h1>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<div id="content-flows">
+							<div id="bilateralChart">
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<div class="span3">
+			<section>
+				<div class="page-header">
+					<h1>
+						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
+							<span id="expand-sectors" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
+						</div>
+						Sectors
+						<div class ="icon resetSectors" style="display: inline-block; padding-bottom:4px;">
+							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
+						</div>
+						<!-- <a class="resetSectors" href="javascript:allSectorChart.filterAll();dc.redrawAll();" style="display: none;">| reset</a> -->
+					</h1>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<div id="content-sectors">
+							<div id="allSectorChart">
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+        <div class="row-fluid">
 		<div class="span12">
 			<section>
 				<div class="page-header">
@@ -116,72 +174,17 @@
 						<div class="clearfix"></div>
 					</div>
 				</div>
-			</section>	
+			</section>
 		</div>
 	</div>
-	
-	<!-- header -->
-	<div class="row-fluid">
-		<div class="span9">
-			<section>
-				<div class="page-header">
-					<h1 id="flows">
-						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
-							<span id="expand-flows" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
-						</div>
-						Flows 
-						<div class ="icon resetGrid" style="display: inline-block; padding-bottom:4px;">
-							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
-						</div>
-						<!-- <a class="resetGrid" href="javascript:bilateralChart.resetGrid();" style="display: none;">| reset</a> -->
-					</h1>
-				</div>
-				<div class="row-fluid">
-					<div class="span12">
-						<div id="content-flows">
-							<div id="bilateralChart">
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						
-					</div>
-				</div>
-			</section>
 
-		</div>
-		
-		<div class="span3">
-			<section>
-				<div class="page-header">
-					<h1>
-						<div class = "icon" style="display: inline-block; padding-bottom:4px;">
-							<span id="expand-sectors" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus"></span>
-						</div>
-						Sectors 
-						<div class ="icon resetSectors" style="display: inline-block; padding-bottom:4px;">
-							<span id="refresh-map" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
-						</div>
-						<!-- <a class="resetSectors" href="javascript:allSectorChart.filterAll();dc.redrawAll();" style="display: none;">| reset</a> -->
-					</h1>
-				</div>
-				<div class="row-fluid">
-					<div class="span12">
-						<div id="content-sectors">
-							<div id="allSectorChart">					
-								<div class="clearfix"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			
-		</div>
+
 	</div>
-	
-	
+
+
 </div>
 
-	
+
 
 
 <script src="assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
