@@ -20,24 +20,30 @@ GDM_GRID_VIEWER.Data = (function(my){
         d3.json(server_address + '/get_flows', callback);
     };
 
-    var _delta_json = function(x, y) {
+    var _delta_json = function(x, y, matchOn) {
         // Return a JSON object identical in structure to
         // x but delta'ed with the elements of y
         // if no y is given, the resulting JSON will have all zeros
         // in its numerical values
-        var z = {}; // the return object
+        var z = {}, // the return object
+		    delta;
         if (typeof(x) === "object") {
             Object.keys(x).forEach(function(key) {
                 // call this function recursively until x is
                 // just a property and not an object itself
-                z[key] = _delta_json(x[key], (y ? y[key] : undefined));
+				delta = _delta_json(x[key], (y ? y[key] : undefined), matchOn);
+				if (key === matchOn && typeof(delta) !== "number") {
+					z[key] = delta;
+				} else {
+					z[key] = x[key];
+				}
             });
         }
         else{
             // This is where the recursion 'bottoms out'
             if (typeof(x) === "number") {
                 // if x is a number
-                if (typeof(y) === "undefined") {
+                if (typeof(y) !== "undefined") {
                     // if y is present
                     return x - y;
                 }
@@ -70,19 +76,12 @@ GDM_GRID_VIEWER.Data = (function(my){
     }
 	
 	var _refresh_json_response = function(error, json) {
-        _flows = _get_flows_from_json(json);
+        _flows = _delta_json(_get_flows_from_json(json), _flows, "value");		
         GDM_GRID_VIEWER.Graphs.refresh(_flows);
 	}
 
 	var _get_flows_from_json = function(json) {
-		var flows
-		if (_show_deltas) {
-			flows = _delta_json(json.flows, _flows);
-		} else {
-			flows = json.flows;
-		}
-		
-		return flows;
+		return json.flows;
 	}
 	
     // [ public methods ]

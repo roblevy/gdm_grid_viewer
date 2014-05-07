@@ -32,32 +32,41 @@ GDM_GRID_VIEWER.Graphs = (function(my){
 		dc.renderAll();
     }
 	
-	var _refresh = function(data) {
+	var _refresh_data = function(data) {
 		var i, j,
-			chart, filters, filter,
+			chart, oldFilters,
 			allCharts = dc.chartRegistry.list();
 
-		_xfilter_init(data);
-		_charts.bilateral_chart
-			.group(_groups.bilateral)
-			.dimension(_dimensions.bilateral);
-		_charts.sector_chart
-			.group(_groups.sector)
-			.dimension(_dimensions.sector);
+		_xfilter = _xfilter_reset(_xfilter, _dimensions, data);		
 		
-		// Reset all filters
+		// Reset all filters using dc.js
 		for (i = 0; i < allCharts.length; i++) {
 			chart = allCharts[i];
-			filters = chart.filters();
+			oldFilters = chart.filters(); // Get current filters
 			chart.filter(null); // Reset all filters on current chart
-			for (j = 0; j < filters.length; j++) {
-				filter = filters[j];
-				chart.filter(filter);
+			for (j = 0; j < oldFilters.length; j++) {
+				// Set all the oldFilters back onto the chart
+				chart.filter(oldFilters[j]);
 			}
 		}
 		dc.redrawAll();
 	}
 
+	// Unfilters all the given dimensions, removes all data
+	// from xf and adds newData to xf.
+	var _xfilter_reset = function(xf, dimensions, newData) {
+		var i;
+		for (i = 0; i < dimensions.length; i++) {
+			// Clear all filters from this dimension.
+			// Necessary because xf.remove only removes records
+			// matching the current filter.
+			dimensions[i].filter(null);
+		}
+		xf.remove(); // Remove all data from the crossfilter
+		xf.add(newData);
+		return xf;
+	}
+	
 	var _xfilter_init = function(data) {
 		_xfilter = crossfilter(data);
 		_groupAll = _xfilter.groupAll();
@@ -152,7 +161,7 @@ GDM_GRID_VIEWER.Graphs = (function(my){
 
     // [ public methods ]
     my.init = _init;
-	my.refresh = function(data) { return _refresh(data) };
+	my.refresh = function(data) { return _refresh_data(data) };
     my.show = _show;
     my.charts = function() { return _charts; };
     my.update_filtered_count = function() { return update_filtered_count; };
