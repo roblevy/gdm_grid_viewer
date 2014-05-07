@@ -532,7 +532,7 @@ function crossfilter() {
       filterListeners = [], // when the filters change
       dataListeners = [], // when data is added
       removeDataListeners = []; // when data is removed
-
+  
   // Adds the specified new records to this crossfilter.
   function add(newData) {
     var n0 = n,

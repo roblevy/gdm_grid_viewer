@@ -13,13 +13,13 @@ GDM_GRID_VIEWER.UI = (function(my){
       // [ private methods ]
       function _init() {
           $(".button").button();
-          // Report how many records have been filtered
-          _dom_filtered_count.append(_data.filtered_count());
-          // Report the total number of records
-          $("#flows_count").append(_data.flows_xfilter().size());
           _initialise_reset_buttons();
       }
 
+	  function _update_filtered_count(value) {
+		  _dom_filtered_count.text(value);
+	  }
+	  
       function _initialise_reset_buttons() {
           $(".resetMap").hide();
           $(".resetMap").click(function(){
@@ -53,6 +53,7 @@ GDM_GRID_VIEWER.UI = (function(my){
     my.dom_reset_sectors = function() { return _dom_reset_sectors; };
     my.dom_filtered_count = function() { return _dom_filtered_count; };
     my.dom_map = function() { return _dom_map; };
+	my.update_filtered_count = _update_filtered_count;
 
     return my;
 }(GDM_GRID_VIEWER.UI || {}));

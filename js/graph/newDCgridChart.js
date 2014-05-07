@@ -16,7 +16,6 @@ dc.SortableBubbleGrid = function(parent, chartGroup){
 	var _isSubset = false;
 	var _subsetFilters = [];
 	var _subsetEntryFilters = [];
-
 	
     _chart.resetGrid = function () {
 
@@ -474,6 +473,7 @@ dc.SortableBubbleGrid = function(parent, chartGroup){
 				
 				_chart.filter(filter);
 				if(_chart.filters().length == 0){
+					// TODO: Shouldn't be referencing DOM elements here!!!
 					$(".resetGrid").hide();
 				}else{
 					$(".resetGrid").show();
@@ -481,8 +481,6 @@ dc.SortableBubbleGrid = function(parent, chartGroup){
 				dc.redrawAll(_chart.chartGroup());
 			}
 			
-			updateFilterCounts(all.value());
-		
         });
     };
 	
