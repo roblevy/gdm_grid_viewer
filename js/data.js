@@ -20,7 +20,7 @@ GDM_GRID_VIEWER.Data = (function(my){
         d3.json(_server_address + '/get_flows', callback);
     };
 
-    var _delta_json = function(x, y, matchOn) {
+    var _delta_object = function(x, y, matchOn) {
         // Return a JSON object identical in structure to
         // x but delta'ed with the elements of y
         // if no y is given, the resulting JSON will have all zeros
@@ -31,8 +31,8 @@ GDM_GRID_VIEWER.Data = (function(my){
             Object.keys(x).forEach(function(key) {
                 // call this function recursively until x is
                 // just a property and not an object itself
-				delta = _delta_json(x[key], (y ? y[key] : undefined), matchOn);
-				if (key === matchOn && typeof(delta) !== "number") {
+				delta = _delta_object(x[key], (y ? y[key] : undefined), matchOn);
+				if (key === matchOn || typeof(delta) !== "number") {
 					z[key] = delta;
 				} else {
 					z[key] = x[key];
@@ -45,7 +45,7 @@ GDM_GRID_VIEWER.Data = (function(my){
                 // if x is a number
                 if (typeof(y) !== "undefined") {
                     // if y is present
-                    return x - y;
+                    return Math.round(x - y);
                 }
                 else {
                     // if y is absent
@@ -59,6 +59,15 @@ GDM_GRID_VIEWER.Data = (function(my){
         }
         // the recursion has come all the way back.
         return z; // Convert object to array
+    }
+    
+    var _delta_json = function(x, y, matchOn) {
+        var i, 
+            z = []; // The return array
+        for (i = 0; i < x.length; i += 1) {
+            z.push(_delta_object(x[i], y[i], matchOn));
+        }
+        return z;
     };
 
     var _init_json_response = function(error, json) {
@@ -76,10 +85,9 @@ GDM_GRID_VIEWER.Data = (function(my){
     }
 	
 	var _refresh_json_response = function(error, json) {
-        //_flows = _delta_json(_get_flows_from_json(json), _flows, "value");
-        //_flows = Array.prototype.slice.call(_flows); // TODO: Convert to array!!!
-        //GDM_GRID_VIEWER.Graphs.refresh(_flows);
-        GDM_GRID_VIEWER.Graphs.refresh(_get_flows_from_json(json));
+        _flows = _delta_json(_get_flows_from_json(json), _flows, "value");
+        GDM_GRID_VIEWER.Graphs.refresh(_flows);
+        //GDM_GRID_VIEWER.Graphs.refresh(_get_flows_from_json(json));
 	}
 
 	var _get_flows_from_json = function(json) {

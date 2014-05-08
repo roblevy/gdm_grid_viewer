@@ -40,12 +40,12 @@ GDM_GRID_VIEWER.UI = (function(my){
 
           $(".resetGrid").hide();
           $(".resetGrid").click(function(){
-              bilateral_chart.resetGrid();
+              GDM_GRID_VIEWER.Graphs.charts().bilateral_chart.resetGrid();
           });
 
           $(".resetSectors").hide();
           $(".resetSectors").click(function(){
-              sector_chart.filterAll();
+              GDM_GRID_VIEWER.Graphs.charts().sector_chart.filterAll();
               dc.redrawAll();
           });
       }

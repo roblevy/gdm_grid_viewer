@@ -36,7 +36,7 @@ GDM_GRID_VIEWER.Graphs = (function(my){
 	
     var _add_event_handlers = function() {
         d3.selectAll(".bubble")
-        .on("click", function(data, index) {
+        .on("contextmenu", function(data, index) {
             //handle right click
             var i, from_to,
                 sector_filters = _charts.sector_chart.filters();
