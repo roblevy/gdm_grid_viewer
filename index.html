@@ -5,8 +5,8 @@
   <title>Model results</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A preview of the jQuery UI Bootstrap theme">
-  <meta name="author" content="Addy Osmani">
+  <meta name="description" content="ENFOLDing flow viewer">
+  <meta name="author" content="Rob Levy and Elio Marchione">
 
   <!-- Le styles -->
   <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -40,6 +40,7 @@
 </head>
 <body>
 
+<!--
 	<header class="jumbotron">
 		<div class="container">
 			<h1 class="pull-left">Global demonstration model</h1>
@@ -47,20 +48,23 @@
 		</div>
 	</header>
 
+-->
 	<div class="container">
 
 	<div class="row-fluid">
-		<div class="span12">
+		<div class="span6">
 			<div id="data-count" class="pull-right" style="font-size:18px; font-weight:bold;padding-top:20px;">
 				Showing <span class="filter-count"></span> out of <span class="total-count"></span> flows &nbsp;
-				<div class ="icon resetAll" style="display: inline-block; padding-top:5px;">
+				<div class ="icon resetAll" style="display: inline-block;">
 					<span id="refresh-all" class="ui-state-default ui-corner-all ui-icon ui-icon-refresh"></span>
 				</div>
 			</div>
 				<!-- <a href="javascript:dc.filterAll(); dc.redrawAll(); resetMap();">Reset All</a></h1> -->
 		</div>
+        <div id="messages" class="span6">
+        </div>
 	</div>
-
+    
 	<div class="row-fluid">
 		<div class="span12">
 			<section>

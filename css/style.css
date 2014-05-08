@@ -43,5 +43,19 @@
 .icon{
 	cursor:pointer;
 }
+
+#messages {
+    font-size:18px;
+    font-weight:bold;
+    padding-top:20px;
+    transition:color .25s ease-in-out;
+    transition:background .25s ease-in-out;
+}
+
+#messages.new {
+    color: red;
+    background: #eee;
+}
+
 /*#dcd9de -> #B24926
 #665874 -> #FAA523*/

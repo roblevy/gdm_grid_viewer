@@ -3,7 +3,7 @@ var GDM_GRID_VIEWER = GDM_GRID_VIEWER || {};
 GDM_GRID_VIEWER.Data = (function(my){
     'use strict';
     // [ private properties ]
-    var server_address = "http://localhost:5000",
+    var _server_address = "http://localhost:5000",
         _flows = [], // Flow data from the server JSON
         _flow_deltas = [], // Changes since last time (or 0)
 		_show_deltas = false, // Toggle to show deltas
@@ -17,7 +17,7 @@ GDM_GRID_VIEWER.Data = (function(my){
 
     // [ private methods ]
     var _get_data = function(callback) {
-        d3.json(server_address + '/get_flows', callback);
+        d3.json(_server_address + '/get_flows', callback);
     };
 
     var _delta_json = function(x, y, matchOn) {
@@ -58,7 +58,7 @@ GDM_GRID_VIEWER.Data = (function(my){
             }
         }
         // the recursion has come all the way back.
-        return z;
+        return z; // Convert object to array
     };
 
     var _init_json_response = function(error, json) {
@@ -76,8 +76,10 @@ GDM_GRID_VIEWER.Data = (function(my){
     }
 	
 	var _refresh_json_response = function(error, json) {
-        _flows = _delta_json(_get_flows_from_json(json), _flows, "value");		
-        GDM_GRID_VIEWER.Graphs.refresh(_flows);
+        //_flows = _delta_json(_get_flows_from_json(json), _flows, "value");
+        //_flows = Array.prototype.slice.call(_flows); // TODO: Convert to array!!!
+        //GDM_GRID_VIEWER.Graphs.refresh(_flows);
+        GDM_GRID_VIEWER.Graphs.refresh(_get_flows_from_json(json));
 	}
 
 	var _get_flows_from_json = function(json) {
@@ -95,6 +97,7 @@ GDM_GRID_VIEWER.Data = (function(my){
     my.country_ids = function() { return _country_ids; };
     my.sectors = function() { return _sectors; };
     my.sectors_by_id = function() { return _sectors_by_id; };
-
+    my.server_address = _server_address;
+    
     return my;
 }(GDM_GRID_VIEWER.Data || {}));

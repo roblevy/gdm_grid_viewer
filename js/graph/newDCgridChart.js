@@ -107,7 +107,7 @@ dc.SortableBubbleGrid = function(parent, chartGroup){
     };
 	
     var _rValueAccessor = function (d) {
-        return Math.sqrt(d.r);
+        return Math.sqrt(Math.abs(d.r));
     };
 	
     _chart.radiusValueAccessor = function (_) {
@@ -161,14 +161,19 @@ dc.SortableBubbleGrid = function(parent, chartGroup){
 		var tempDomain = [tempLog(_domain[0]), tempLog(_domain[1])];
 
 		var tempS = d3.scale.sqrt().domain(tempDomain).range([maxRadius*_minRadius,maxRadius]).clamp(true)
-		var tempC = d3.scale.sqrt().domain(tempDomain).range(["hsl(298, 100%, 94%, 0.77)", "hsl(228, 30%, 14%, 1)"]).clamp(true)
+		var tempC = d3.scale.sqrt().domain(tempDomain).range(["rgb(255, 255, 255)", "rgb(14, 14, 135)"]).clamp(true)
+		var negC = d3.scale.sqrt().domain(tempDomain).range(["rgb(255, 255, 255)", "rgb(135, 14, 14)"]).clamp(true)
 		
 		_z = function(v){
-			return tempS(tempLog(v));
+			return tempS(tempLog(Math.abs(v)));
 		}
 		_c = function(v){
-			return tempC(tempLog(v));
-		}
+            if (v < 0) {
+                return negC(tempLog(Math.abs(v)));
+            } else {
+                return tempC(tempLog(v));
+            }
+        }
 
 	}
 	
@@ -792,7 +797,7 @@ dc.SortableBubbleGrid = function(parent, chartGroup){
 		});
 		
 		var min = d3.min(matrix, function(array) {
-		  return d3.min(array, function(e){return e.z});
+		  return d3.min(array, function(e){return Math.abs(e.z)});
 		});
 		min = (min == 0)?1:min;
 		_domain = [min,max];
